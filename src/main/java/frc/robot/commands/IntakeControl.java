@@ -4,12 +4,20 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.Constants;
+import frc.robot.subsystems.Intake;
 
-public class IntakeNote extends Command {
-  /** Creates a new IntakeNote. */
-  public IntakeNote() {
-    // Use addRequirements() here to declare subsystem dependencies.
+public class IntakeControl extends Command {
+  /** Creates a new IntakeControl. */
+  private final Intake intake;
+  private final XboxController controller;
+  public IntakeControl(Intake i, XboxController c) {
+    intake = i;
+    controller = c;
+    addRequirements(intake);
+   // Use addRequirements() here to declare subsystem dependencies.
   }
 
   // Called when the command is initially scheduled.
@@ -18,7 +26,17 @@ public class IntakeNote extends Command {
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {}
+  public void execute() {
+    
+  if(controller.getRawButton(Constants.Intake.SpinButton))
+  {
+    intake.intakeActive();
+  }
+  else{
+    intake.intakeRest();
+  }
+
+  }
 
   // Called once the command ends or is interrupted.
   @Override

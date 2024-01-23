@@ -17,6 +17,8 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.swervedrive.drivebase.AbsoluteDriveAdv;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
+import frc.robot.subsystems.Intake;
+import frc.robot.commands.IntakeControl;
 import java.io.File;
 
 /**
@@ -28,6 +30,7 @@ public class RobotContainer
 {
 
   // The robot's subsystems and commands are defined here...
+  private final Intake intake;
   private final SwerveSubsystem drivebase = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(),
                                                                          "swerve/neo"));
   // CommandJoystick rotationController = new CommandJoystick(1);
@@ -36,13 +39,16 @@ public class RobotContainer
 
   // CommandJoystick driverController   = new CommandJoystick(3);//(OperatorConstants.DRIVER_CONTROLLER_PORT);
   XboxController driverXbox = new XboxController(0);
-
+  private final IntakeControl intakeControl;
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
    */
   public RobotContainer()
   {
     // Configure the trigger bindings
+    intake = new Intake();
+    intakeControl = new IntakeControl(intake, driverXbox);
+    intake.setDefaultCommand(intakeControl);
     configureBindings();
 
     AbsoluteDriveAdv closedAbsoluteDriveAdv = new AbsoluteDriveAdv(drivebase,
