@@ -6,20 +6,20 @@ package frc.robot.subsystems;
 
 
 
-import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
 public class Intake extends SubsystemBase {
   /** Creates a new Intake. */
-WPI_TalonSRX topMotor;
-WPI_TalonSRX bottomMotor;
+WPI_VictorSPX topMotor;
+WPI_VictorSPX bottomMotor;
 
 
   public Intake() {
-  topMotor = new WPI_TalonSRX(Constants.Intake.topMotorCANID);
-  bottomMotor = new WPI_TalonSRX(Constants.Intake.bottomMotorCANID);
+  topMotor = new WPI_VictorSPX(Constants.Intake.topMotorCANID);
+  bottomMotor = new WPI_VictorSPX(Constants.Intake.bottomMotorCANID);
   }
 public void intakeRest()
 {

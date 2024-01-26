@@ -39,6 +39,8 @@ public class RobotContainer
 
   // CommandJoystick driverController   = new CommandJoystick(3);//(OperatorConstants.DRIVER_CONTROLLER_PORT);
   XboxController driverXbox = new XboxController(0);
+
+
   private final IntakeControl intakeControl;
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -107,6 +109,9 @@ public class RobotContainer
 
     new JoystickButton(driverXbox, 8).onTrue((new InstantCommand(drivebase::zeroGyro)));
     new JoystickButton(driverXbox, 3).onTrue(new InstantCommand(drivebase::addFakeVisionReading));
+    new JoystickButton(driverXbox, 1).onTrue(new InstantCommand(intake::intakeActive));
+    new JoystickButton(driverXbox, 1).onFalse(new InstantCommand(intake::intakeRest));
+
 //    new JoystickButton(driverXbox, 3).whileTrue(new RepeatCommand(new InstantCommand(drivebase::lock, drivebase)));
   }
 

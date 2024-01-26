@@ -43,8 +43,8 @@ public final class Constants
   public static final class Intake{
     public static final int topMotorCANID = 22;
     public static final int bottomMotorCANID = 21;
-    public static final double topMotorIntakeSpeed = 0.5;
-    public static final double bottomMotorIntakeSpeed = -0.7;
+    public static final double topMotorIntakeSpeed = 0.6;
+    public static final double bottomMotorIntakeSpeed = 0.8;
     public static final int SpinButton = 1;
 
   }

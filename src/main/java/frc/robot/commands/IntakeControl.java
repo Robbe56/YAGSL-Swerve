@@ -28,13 +28,15 @@ public class IntakeControl extends Command {
   @Override
   public void execute() {
     
-  if(controller.getRawButton(Constants.Intake.SpinButton))
+  /*if(controller.getRawButton(Constants.Intake.SpinButton))
   {
     intake.intakeActive();
   }
   else{
     intake.intakeRest();
+  
   }
+  */  
 
   }
 
