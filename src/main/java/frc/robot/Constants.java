@@ -49,6 +49,26 @@ public final class Constants
 
   }
 
+  public static final class Shooter{
+    public static final int armMotorCANID = 23;
+    public static final int feedMotorCANID = 24;
+    public static final int leftShooterMotorID = 25;
+    public static final int rightShooterMotorID = 26;
+
+    public static final int armDownLimitSwitch = 0;
+    public static final int armUpLimitSwitch = 1;
+    public static final int noteInFeederSensor = 2;
+
+    public static final double armUpSpeed = 0.5;
+    public static final double armDownSpeed = -0.3;
+    public static final double armHoldSpeed = 0.15;
+    
+    public static final double feedLowSpeed = 0.3;
+    public static final double feedHighSpeed = 1;
+    public static final double shootLowSpeed = 0.4;
+    public static final double shootHighSpeed = 0.8;
+  }
+
   public static class OperatorConstants
   {
 
