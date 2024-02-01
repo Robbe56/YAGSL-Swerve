@@ -4,19 +4,21 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.Constants;
-import frc.robot.subsystems.Intake;
 
-public class IntakeControl extends Command {
+import frc.robot.subsystems.IntakeSubsystem;
+import frc.robot.subsystems.ShooterSubsystem;
+
+public class IntakeOnCommand extends Command {
   /** Creates a new IntakeControl. */
-  private final Intake intake;
-  private final XboxController controller;
-  public IntakeControl(Intake i, XboxController c) {
-    intake = i;
-    controller = c;
-    addRequirements(intake);
+  private final IntakeSubsystem intake;
+  private final ShooterSubsystem shooter;
+
+  public IntakeOnCommand(IntakeSubsystem m_intake, ShooterSubsystem m_shooter) {
+    intake = m_intake;
+    shooter = m_shooter;
+  
+    addRequirements(intake, shooter);
    // Use addRequirements() here to declare subsystem dependencies.
   }
 
@@ -28,21 +30,22 @@ public class IntakeControl extends Command {
   @Override
   public void execute() {
     
-  /*if(controller.getRawButton(Constants.Intake.SpinButton))
-  {
-    intake.intakeActive();
-  }
-  else{
+  if(shooter.noteInFeeder.get() == false){ //if Feeder Sensor sees a note
     intake.intakeRest();
-  
-  }
-  */  
+    }
 
+  if(shooter.noteInFeeder.get() == true){ //if Feeder Sensor does not see a note
+    intake.intakeActive();
+    }
+   
   }
+
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+    
+  }
 
   // Returns true when the command should end.
   @Override

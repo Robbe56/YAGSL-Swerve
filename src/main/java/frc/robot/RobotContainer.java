@@ -6,19 +6,25 @@ package frc.robot;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.Filesystem;
-import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
-import frc.robot.Constants.OperatorConstants;
+import frc.robot.Constants.OperatorConstants; 
 import frc.robot.commands.swervedrive.drivebase.AbsoluteDriveAdv;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
-import frc.robot.subsystems.Intake;
-import frc.robot.commands.IntakeControl;
+import frc.robot.subsystems.IntakeSubsystem;
+import frc.robot.subsystems.ShooterSubsystem;
+import frc.robot.commands.ArmDownAutoCommand;
+import frc.robot.commands.ArmUpAutoCommand;
+import frc.robot.commands.AutoDumpInAmp;
+import frc.robot.commands.IntakeOffCommand;
+import frc.robot.commands.IntakeOnCommand;
+import frc.robot.commands.JoystickArmCommand;
+
 import java.io.File;
 
 /**
@@ -30,27 +36,45 @@ public class RobotContainer
 {
 
   // The robot's subsystems and commands are defined here...
-  private final Intake intake;
+  private final IntakeSubsystem m_intake = new IntakeSubsystem();
+  private final ShooterSubsystem m_shooter = new ShooterSubsystem();
+  public double armControlValue;
   private final SwerveSubsystem drivebase = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(),
                                                                          "swerve/neo"));
   // CommandJoystick rotationController = new CommandJoystick(1);
   // Replace with CommandPS4Controller or CommandJoystick if needed
-  CommandJoystick driverController = new CommandJoystick(1);
-
-  // CommandJoystick driverController   = new CommandJoystick(3);//(OperatorConstants.DRIVER_CONTROLLER_PORT);
+  //CommandJoystick driverController = new CommandJoystick(1);
+  XboxController operatorController = new XboxController(2);
   XboxController driverXbox = new XboxController(0);
 
+  private final IntakeOnCommand m_suckInNote;
+  private final IntakeOffCommand m_stopIntake;
+  private final ArmUpAutoCommand m_armUpAutoCommand;
+  private final ArmDownAutoCommand m_armDownAutoCommand;
+  private final AutoDumpInAmp m_autoDumpInAmp;
+  private final JoystickArmCommand m_joystickArmCommand;
 
-  private final IntakeControl intakeControl;
+  private final SequentialCommandGroup m_autoAmpSequence;
+
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
    */
   public RobotContainer()
   {
-    // Configure the trigger bindings
-    intake = new Intake();
-    intakeControl = new IntakeControl(intake, driverXbox);
-    intake.setDefaultCommand(intakeControl);
+    armControlValue = operatorController.getLeftY();
+
+    m_suckInNote = new IntakeOnCommand(m_intake, m_shooter);
+    m_stopIntake = new IntakeOffCommand(m_intake);
+    m_joystickArmCommand = new JoystickArmCommand(m_shooter, armControlValue);
+   
+    m_intake.setDefaultCommand(m_stopIntake); 
+    m_shooter.setDefaultCommand(m_joystickArmCommand);
+
+    m_armDownAutoCommand = new ArmDownAutoCommand(m_shooter);
+    m_armUpAutoCommand = new ArmUpAutoCommand(m_shooter);
+    m_autoDumpInAmp = new AutoDumpInAmp(m_shooter, null);
+    m_autoAmpSequence = new SequentialCommandGroup(m_armUpAutoCommand, m_autoDumpInAmp, m_armDownAutoCommand);
+
     configureBindings();
 
     AbsoluteDriveAdv closedAbsoluteDriveAdv = new AbsoluteDriveAdv(drivebase,
@@ -109,10 +133,11 @@ public class RobotContainer
 
     new JoystickButton(driverXbox, 8).onTrue((new InstantCommand(drivebase::zeroGyro)));
     new JoystickButton(driverXbox, 3).onTrue(new InstantCommand(drivebase::addFakeVisionReading));
-    new JoystickButton(driverXbox, 1).onTrue(new InstantCommand(intake::intakeActive));
-    new JoystickButton(driverXbox, 1).onFalse(new InstantCommand(intake::intakeRest));
+    new JoystickButton(driverXbox, 1).onTrue(m_suckInNote);
+    new JoystickButton(driverXbox, 1).onFalse(m_stopIntake);
 
-//    new JoystickButton(driverXbox, 3).whileTrue(new RepeatCommand(new InstantCommand(drivebase::lock, drivebase)));
+    new JoystickButton(operatorController, 1).onTrue(m_autoAmpSequence);
+    new JoystickButton(operatorController, 1).onFalse(m_joystickArmCommand);
   }
 
   /**

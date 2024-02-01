@@ -11,26 +11,28 @@ import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
-public class Intake extends SubsystemBase {
+public class IntakeSubsystem extends SubsystemBase {
   /** Creates a new Intake. */
 WPI_VictorSPX topMotor;
 WPI_VictorSPX bottomMotor;
 
 
-  public Intake() {
+  public IntakeSubsystem() {
   topMotor = new WPI_VictorSPX(Constants.Intake.topMotorCANID);
   bottomMotor = new WPI_VictorSPX(Constants.Intake.bottomMotorCANID);
   }
-public void intakeRest()
-{
+
+  public void intakeRest()
+  {
   topMotor.stopMotor();
   bottomMotor.stopMotor();
-}
+  }
+
 public void intakeActive()
-{
+  {
   topMotor.set(Constants.Intake.topMotorIntakeSpeed);
   bottomMotor.set(Constants.Intake.bottomMotorIntakeSpeed);
-}
+  }
   @Override
   public void periodic() {
     // This method will be called once per scheduler run

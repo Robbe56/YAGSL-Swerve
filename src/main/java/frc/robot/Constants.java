@@ -43,8 +43,8 @@ public final class Constants
   public static final class Intake{
     public static final int topMotorCANID = 22;
     public static final int bottomMotorCANID = 21;
-    public static final double topMotorIntakeSpeed = 0.6;
-    public static final double bottomMotorIntakeSpeed = 0.8;
+    public static final double topMotorIntakeSpeed = 0.4;
+    public static final double bottomMotorIntakeSpeed = 0.4;
     public static final int SpinButton = 1;
 
   }
@@ -59,6 +59,13 @@ public final class Constants
     public static final int armUpLimitSwitch = 1;
     public static final int noteInFeederSensor = 2;
 
+    //Arm Encoder Values
+    public static final int almostUpValue = 90;
+    public static final int almostDownValue = 20;
+    public static final double ampFeedSpeed = 0.8;
+    public static final double ampShooterSpeed = 0.5;
+    public static final double waitTimeForScore = 1;
+
     public static final double armUpSpeed = 0.5;
     public static final double armDownSpeed = -0.3;
     public static final double armHoldSpeed = 0.15;
@@ -67,6 +74,7 @@ public final class Constants
     public static final double feedHighSpeed = 1;
     public static final double shootLowSpeed = 0.4;
     public static final double shootHighSpeed = 0.8;
+    public static final double TimeToRunShooterIntoAmp = 1; //run motors for this many seconds
   }
 
   public static class OperatorConstants
