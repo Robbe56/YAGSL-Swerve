@@ -5,7 +5,6 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.Constants;
 import frc.robot.subsystems.ShooterSubsystem;
 
 public class ArmDownAutoCommand extends Command {
@@ -25,12 +24,7 @@ public class ArmDownAutoCommand extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if (shooter.GetArmEncoderPosition() >= Constants.Shooter.almostDownValue){
-    shooter.ArmDownCommand(Constants.Shooter.armDownSpeed);
-    }
-    if (shooter.GetArmEncoderPosition() < Constants.Shooter.almostDownValue){
-      shooter.ArmDownCommand(Constants.Shooter.armDownSpeed*.1);                //go at 10% of arm speed when close to limit
-    }
+    shooter.ArmDownCommand();
   }
 
   // Called once the command ends or is interrupted.

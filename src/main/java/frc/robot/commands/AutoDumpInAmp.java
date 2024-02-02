@@ -14,10 +14,10 @@ public class AutoDumpInAmp extends Command {
    private final ShooterSubsystem shooter;
    private final Timer timer;
 
-  public AutoDumpInAmp(ShooterSubsystem m_shooter, Timer m_timer) {
+  public AutoDumpInAmp(ShooterSubsystem m_shooter) {
     // Use addRequirements() here to declare subsystem dependencies.
-    shooter = m_shooter; 
-    timer = m_timer;
+    shooter = m_shooter;
+    timer = new Timer(); 
     addRequirements(shooter);
   }
 

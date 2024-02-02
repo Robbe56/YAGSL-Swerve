@@ -5,17 +5,16 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.RobotContainer;
 import frc.robot.subsystems.ShooterSubsystem;
 
 public class JoystickArmCommand extends Command {
   /** Creates a new JoystickArmCommand. */
   private final ShooterSubsystem shooter;
-  private final double armSpeed;
 
-  public JoystickArmCommand(ShooterSubsystem m_shooter, double m_armSpeed) {
+  public JoystickArmCommand(ShooterSubsystem m_shooter) {
     // Use addRequirements() here to declare subsystem dependencies.
     shooter = m_shooter;
-    armSpeed = m_armSpeed;
     addRequirements(shooter);
   }
 
@@ -26,7 +25,7 @@ public class JoystickArmCommand extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    shooter.ArmJoystickControl(armSpeed);
+    shooter.ArmJoystickControl(-RobotContainer.operatorController.getRightY());
   }
 
   // Called once the command ends or is interrupted.

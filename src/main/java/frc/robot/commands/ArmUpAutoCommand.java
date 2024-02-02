@@ -5,7 +5,6 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.Constants;
 import frc.robot.subsystems.ShooterSubsystem;
 
 public class ArmUpAutoCommand extends Command {
@@ -25,13 +24,9 @@ public class ArmUpAutoCommand extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if (shooter.GetArmEncoderPosition() <= Constants.Shooter.almostUpValue){
-    shooter.ArmUpCommand(Constants.Shooter.armUpSpeed);
-    }
-    if (shooter.GetArmEncoderPosition() > Constants.Shooter.almostUpValue){
-      shooter.ArmUpCommand(Constants.Shooter.armUpSpeed*.2);                //go at 20% of arm speed when close to limit
-    }
-  }
+    shooter.ArmUpCommand();
+  }  
+  
 
   // Called once the command ends or is interrupted.
   @Override

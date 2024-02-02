@@ -44,7 +44,7 @@ public class RobotContainer
   // CommandJoystick rotationController = new CommandJoystick(1);
   // Replace with CommandPS4Controller or CommandJoystick if needed
   //CommandJoystick driverController = new CommandJoystick(1);
-  XboxController operatorController = new XboxController(2);
+  public static XboxController operatorController = new XboxController(2);
   XboxController driverXbox = new XboxController(0);
 
   private final IntakeOnCommand m_suckInNote;
@@ -61,18 +61,19 @@ public class RobotContainer
    */
   public RobotContainer()
   {
-    armControlValue = operatorController.getLeftY();
+    //armControlValue = -operatorController.getRawAxis(1); //multiplying by -1 because back should be negative
 
     m_suckInNote = new IntakeOnCommand(m_intake, m_shooter);
     m_stopIntake = new IntakeOffCommand(m_intake);
-    m_joystickArmCommand = new JoystickArmCommand(m_shooter, armControlValue);
+    m_joystickArmCommand = new JoystickArmCommand(m_shooter);
    
     m_intake.setDefaultCommand(m_stopIntake); 
     m_shooter.setDefaultCommand(m_joystickArmCommand);
 
     m_armDownAutoCommand = new ArmDownAutoCommand(m_shooter);
     m_armUpAutoCommand = new ArmUpAutoCommand(m_shooter);
-    m_autoDumpInAmp = new AutoDumpInAmp(m_shooter, null);
+    m_autoDumpInAmp = new AutoDumpInAmp(m_shooter);
+  
     m_autoAmpSequence = new SequentialCommandGroup(m_armUpAutoCommand, m_autoDumpInAmp, m_armDownAutoCommand);
 
     configureBindings();
@@ -138,6 +139,11 @@ public class RobotContainer
 
     new JoystickButton(operatorController, 1).onTrue(m_autoAmpSequence);
     new JoystickButton(operatorController, 1).onFalse(m_joystickArmCommand);
+
+    new JoystickButton(operatorController, 5).onTrue(new InstantCommand(m_shooter::ShooterIntoSpeakerSpeed));
+    new JoystickButton(operatorController, 5).onFalse(new InstantCommand(m_shooter::StopShooter));
+    new JoystickButton(operatorController, 6).onTrue(new InstantCommand(m_shooter::FeedMotorFast));
+     new JoystickButton(operatorController, 6).onFalse(new InstantCommand(m_shooter::StopFeedRoller));
   }
 
   /**
