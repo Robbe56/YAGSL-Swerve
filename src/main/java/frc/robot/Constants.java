@@ -30,7 +30,7 @@ public final class Constants
     public static final PIDFConfig TranslationPID = new PIDFConfig(0.02, 0, 0);
     public static final PIDFConfig angleAutoPID   = new PIDFConfig(0.04, 0, 0.01);
 
-    public static final double MAX_ACCELERATION = 2;
+    public static final double MAX_ACCELERATION = .5;
   }
 
   public static final class Drivebase
@@ -43,9 +43,10 @@ public final class Constants
   public static final class Intake{
     public static final int topMotorCANID = 22;
     public static final int bottomMotorCANID = 21;
-    public static final double topMotorIntakeSpeed = 0.4;
-    public static final double bottomMotorIntakeSpeed = 0.4;
+    public static final double topMotorIntakeSpeed = 0.8;
+    public static final double bottomMotorIntakeSpeed = 0.8;
     public static final int SpinButton = 1;
+    public static final double SpitOutSpeed = -1;
 
   }
 
@@ -66,17 +67,18 @@ public final class Constants
     public static final double ampShooterSpeed = -0.6;
     public static final double waitTimeForScore = 1;
 
-    public static final double armUpSpeed = 0.5;
-    public static final double armDownSpeed = -0.3;
-    public static final double armHoldSpeed = 0.15;
-    public static final double MaxUpSpeed = 0.5;
-    public static final double MaxDownSpeed = -0.4;
+    public static final double armUpSpeed = -0.5;
+    public static final double armDownSpeed = 0.3;
+    public static final double armHoldSpeed = -0.15;
+    public static final double MaxUpSpeed = -0.5;
+    public static final double MaxDownSpeed = 0.4;
     
     public static final double feedLowSpeed = -0.5;
     public static final double feedHighSpeed = -.8;
     public static final double shootLowSpeed = -0.4;
     public static final double shootHighSpeed = -.8;
-    public static final double TimeToRunShooterIntoAmp = 1; //run motors for this many seconds
+    public static final double TimeToRunShooterIntoAmp = .5; //run motors for this many seconds
+    public static final double feedBackward = .8;
     
   }
 

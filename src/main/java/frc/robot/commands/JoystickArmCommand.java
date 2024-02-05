@@ -4,18 +4,20 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.RobotContainer;
-import frc.robot.subsystems.ShooterSubsystem;
+import frc.robot.subsystems.ArmSubsystem;
 
 public class JoystickArmCommand extends Command {
   /** Creates a new JoystickArmCommand. */
-  private final ShooterSubsystem shooter;
+  private final ArmSubsystem arm;
+  private final XboxController armController;
 
-  public JoystickArmCommand(ShooterSubsystem m_shooter) {
+  public JoystickArmCommand(ArmSubsystem m_arm, XboxController m_armController) {
     // Use addRequirements() here to declare subsystem dependencies.
-    shooter = m_shooter;
-    addRequirements(shooter);
+    arm = m_arm;
+    armController = m_armController;
+    addRequirements(arm);
   }
 
   // Called when the command is initially scheduled.
@@ -25,8 +27,9 @@ public class JoystickArmCommand extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    shooter.ArmJoystickControl(-RobotContainer.operatorController.getRightY());
+    arm.ArmJoystickControl(-armController.getRawAxis(3));
   }
+
 
   // Called once the command ends or is interrupted.
   @Override

@@ -4,16 +4,22 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.IntakeSubsystem;
+import frc.robot.subsystems.ShooterSubsystem;
 
 public class IntakeOffCommand extends Command {
   /** Creates a new IntakeOffCommand. */
 private final IntakeSubsystem intake;
+private final ShooterSubsystem shooter;
+private final XboxController controller;
 
-  public IntakeOffCommand(IntakeSubsystem m_intake) {
+  public IntakeOffCommand(IntakeSubsystem m_intake, ShooterSubsystem m_shooter, XboxController m_controller) {
     // Use addRequirements() here to declare subsystem dependencies.
     intake = m_intake;
+    shooter = m_shooter;
+    controller = m_controller;
 
     addRequirements(intake);
   }
@@ -26,6 +32,13 @@ private final IntakeSubsystem intake;
   @Override
   public void execute() {
     intake.intakeRest();
+    
+    if (controller.getLeftBumper() == false){
+    shooter.StopFeedRoller();
+    }
+    if (controller.getRightBumper() == true){
+      shooter.FeedMotorFast();
+    }
   }
 
   // Called once the command ends or is interrupted.

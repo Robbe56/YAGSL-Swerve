@@ -16,14 +16,14 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.OperatorConstants; 
 import frc.robot.commands.swervedrive.drivebase.AbsoluteDriveAdv;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
+import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.commands.ArmDownAutoCommand;
 import frc.robot.commands.ArmUpAutoCommand;
 import frc.robot.commands.AutoDumpInAmp;
-import frc.robot.commands.IntakeOffCommand;
-import frc.robot.commands.IntakeOnCommand;
 import frc.robot.commands.JoystickArmCommand;
+import frc.robot.commands.RollerButtonCommand;
 
 import java.io.File;
 
@@ -38,6 +38,7 @@ public class RobotContainer
   // The robot's subsystems and commands are defined here...
   private final IntakeSubsystem m_intake = new IntakeSubsystem();
   private final ShooterSubsystem m_shooter = new ShooterSubsystem();
+  private final ArmSubsystem m_arm = new ArmSubsystem();
   public double armControlValue;
   private final SwerveSubsystem drivebase = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(),
                                                                          "swerve/neo"));
@@ -45,16 +46,17 @@ public class RobotContainer
   // Replace with CommandPS4Controller or CommandJoystick if needed
   //CommandJoystick driverController = new CommandJoystick(1);
   public static XboxController operatorController = new XboxController(2);
-  XboxController driverXbox = new XboxController(0);
+  public static XboxController driverXbox = new XboxController(0);
 
-  private final IntakeOnCommand m_suckInNote;
-  private final IntakeOffCommand m_stopIntake;
   private final ArmUpAutoCommand m_armUpAutoCommand;
   private final ArmDownAutoCommand m_armDownAutoCommand;
   private final AutoDumpInAmp m_autoDumpInAmp;
   private final JoystickArmCommand m_joystickArmCommand;
+  private final RollerButtonCommand m_RollerButtonCommand;
 
   private final SequentialCommandGroup m_autoAmpSequence;
+
+  //public double speedCorrectionFactor;
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -63,20 +65,22 @@ public class RobotContainer
   {
     //armControlValue = -operatorController.getRawAxis(1); //multiplying by -1 because back should be negative
 
-    m_suckInNote = new IntakeOnCommand(m_intake, m_shooter);
-    m_stopIntake = new IntakeOffCommand(m_intake);
-    m_joystickArmCommand = new JoystickArmCommand(m_shooter);
+    m_joystickArmCommand = new JoystickArmCommand(m_arm, operatorController);  //control arm manually with joysticks
+    m_RollerButtonCommand = new RollerButtonCommand(m_shooter, m_intake, driverXbox, operatorController); //control all rollers with buttons
    
-    m_intake.setDefaultCommand(m_stopIntake); 
-    m_shooter.setDefaultCommand(m_joystickArmCommand);
+    m_intake.setDefaultCommand(m_RollerButtonCommand);
+    m_shooter.setDefaultCommand(m_RollerButtonCommand);
+    m_arm.setDefaultCommand(m_joystickArmCommand);
 
-    m_armDownAutoCommand = new ArmDownAutoCommand(m_shooter);
-    m_armUpAutoCommand = new ArmUpAutoCommand(m_shooter);
+    m_armDownAutoCommand = new ArmDownAutoCommand(m_arm);
+    m_armUpAutoCommand = new ArmUpAutoCommand(m_arm);
     m_autoDumpInAmp = new AutoDumpInAmp(m_shooter);
   
     m_autoAmpSequence = new SequentialCommandGroup(m_armUpAutoCommand, m_autoDumpInAmp, m_armDownAutoCommand);
 
     configureBindings();
+
+
 
     AbsoluteDriveAdv closedAbsoluteDriveAdv = new AbsoluteDriveAdv(drivebase,
                                                                    () -> MathUtil.applyDeadband(driverXbox.getLeftY(),
@@ -134,16 +138,14 @@ public class RobotContainer
 
     new JoystickButton(driverXbox, 8).onTrue((new InstantCommand(drivebase::zeroGyro)));
     new JoystickButton(driverXbox, 3).onTrue(new InstantCommand(drivebase::addFakeVisionReading));
-    new JoystickButton(driverXbox, 1).onTrue(m_suckInNote);
-    new JoystickButton(driverXbox, 1).onFalse(m_stopIntake);
 
     new JoystickButton(operatorController, 1).onTrue(m_autoAmpSequence);
     new JoystickButton(operatorController, 1).onFalse(m_joystickArmCommand);
 
-    new JoystickButton(operatorController, 5).onTrue(new InstantCommand(m_shooter::ShooterIntoSpeakerSpeed));
-    new JoystickButton(operatorController, 5).onFalse(new InstantCommand(m_shooter::StopShooter));
-    new JoystickButton(operatorController, 6).onTrue(new InstantCommand(m_shooter::FeedMotorFast));
-     new JoystickButton(operatorController, 6).onFalse(new InstantCommand(m_shooter::StopFeedRoller));
+
+    //new JoystickButton(operatorController, 6).onTrue(new InstantCommand(m_shooter::FeedMotorFast));
+    //new JoystickButton(operatorController, 6).onFalse(new InstantCommand(m_shooter::StopFeedRoller));
+
   }
 
   /**

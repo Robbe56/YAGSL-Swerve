@@ -36,6 +36,7 @@ public class IntakeOnCommand extends Command {
 
   if(shooter.noteInFeeder.get() == true){ //if Feeder Sensor does not see a note
     intake.intakeActive();
+    shooter.FeedMotorFast();
     }
    
   }

@@ -33,6 +33,16 @@ public void intakeActive()
   topMotor.set(Constants.Intake.topMotorIntakeSpeed);
   bottomMotor.set(Constants.Intake.bottomMotorIntakeSpeed);
   }
+
+  public void IntakeSpitOut()
+  {
+    topMotor.set(-Constants.Intake.topMotorIntakeSpeed);
+    bottomMotor.set(-Constants.Intake.bottomMotorIntakeSpeed);
+  }
+
+public void intakeSpitOut(){
+  topMotor.set(Constants.Intake.SpitOutSpeed);
+}
   @Override
   public void periodic() {
     // This method will be called once per scheduler run

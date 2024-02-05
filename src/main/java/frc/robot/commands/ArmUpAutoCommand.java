@@ -5,16 +5,17 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 
 public class ArmUpAutoCommand extends Command {
   /** Creates a new ArmUpAutoCommand. */
-  private final ShooterSubsystem shooter;
+  private final ArmSubsystem arm;
 
-  public ArmUpAutoCommand(ShooterSubsystem m_shooter) {
+  public ArmUpAutoCommand(ArmSubsystem m_arm) {
     // Use addRequirements() here to declare subsystem dependencies.
-    shooter = m_shooter; 
-    addRequirements(shooter);
+    arm = m_arm; 
+    addRequirements(arm);
   }
 
   // Called when the command is initially scheduled.
@@ -24,19 +25,19 @@ public class ArmUpAutoCommand extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    shooter.ArmUpCommand();
+    arm.ArmUpCommand();
   }  
   
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    shooter.StopArm();
+    arm.StopArm();
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return !shooter.GetTopLimitSwitch(); //returns true when top limit switch is pressed (limit switch goes from true to false with "!")
+    return !arm.GetTopLimitSwitch(); //returns true when top limit switch is pressed (limit switch goes from true to false with "!")
 }
 }
