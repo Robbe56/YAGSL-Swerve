@@ -23,6 +23,7 @@ import frc.robot.commands.ArmDownAutoCommand;
 import frc.robot.commands.ArmUpAutoCommand;
 import frc.robot.commands.AutoDumpInAmp;
 import frc.robot.commands.JoystickArmCommand;
+import frc.robot.commands.MoveArmToSpeakerShot;
 import frc.robot.commands.RollerButtonCommand;
 
 import java.io.File;
@@ -53,6 +54,7 @@ public class RobotContainer
   private final AutoDumpInAmp m_autoDumpInAmp;
   private final JoystickArmCommand m_joystickArmCommand;
   private final RollerButtonCommand m_RollerButtonCommand;
+  private final MoveArmToSpeakerShot m_MoveArmToSpeakerShot;
 
   private final SequentialCommandGroup m_autoAmpSequence;
 
@@ -63,7 +65,6 @@ public class RobotContainer
    */
   public RobotContainer()
   {
-    //armControlValue = -operatorController.getRawAxis(1); //multiplying by -1 because back should be negative
 
     m_joystickArmCommand = new JoystickArmCommand(m_arm, operatorController);  //control arm manually with joysticks
     m_RollerButtonCommand = new RollerButtonCommand(m_shooter, m_intake, driverXbox, operatorController); //control all rollers with buttons
@@ -75,6 +76,8 @@ public class RobotContainer
     m_armDownAutoCommand = new ArmDownAutoCommand(m_arm);
     m_armUpAutoCommand = new ArmUpAutoCommand(m_arm);
     m_autoDumpInAmp = new AutoDumpInAmp(m_shooter);
+    m_MoveArmToSpeakerShot = new MoveArmToSpeakerShot(m_arm, operatorController);
+
   
     m_autoAmpSequence = new SequentialCommandGroup(m_armUpAutoCommand, m_autoDumpInAmp, m_armDownAutoCommand);
 
@@ -139,8 +142,9 @@ public class RobotContainer
     new JoystickButton(driverXbox, 8).onTrue((new InstantCommand(drivebase::zeroGyro)));
     new JoystickButton(driverXbox, 3).onTrue(new InstantCommand(drivebase::addFakeVisionReading));
 
-    new JoystickButton(operatorController, 1).onTrue(m_autoAmpSequence);
+    //new JoystickButton(operatorController, 1).onTrue(m_autoAmpSequence);
     new JoystickButton(operatorController, 1).onFalse(m_joystickArmCommand);
+    new JoystickButton(operatorController, 3).onTrue(m_MoveArmToSpeakerShot);
 
 
     //new JoystickButton(operatorController, 6).onTrue(new InstantCommand(m_shooter::FeedMotorFast));

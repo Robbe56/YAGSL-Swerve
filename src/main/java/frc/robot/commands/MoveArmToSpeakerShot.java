@@ -4,17 +4,20 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.Constants;
 import frc.robot.subsystems.ArmSubsystem;
 
+public class MoveArmToSpeakerShot extends Command {
+  /** Creates a new MoveArmToSpeakerShot. */
+  ArmSubsystem arm;
+  XboxController operatorController;
 
-public class ArmUpAutoCommand extends Command {
-  /** Creates a new ArmUpAutoCommand. */
-  private final ArmSubsystem arm;
-
-  public ArmUpAutoCommand(ArmSubsystem m_arm) {
+  public MoveArmToSpeakerShot(ArmSubsystem m_arm, XboxController m_operatorController) {
     // Use addRequirements() here to declare subsystem dependencies.
-    arm = m_arm; 
+    arm = m_arm;
+    operatorController = m_operatorController;
     addRequirements(arm);
   }
 
@@ -25,9 +28,11 @@ public class ArmUpAutoCommand extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    arm.ArmUpCommand();
-  }  
-  
+    if (arm.GetArmEncoderPosition() < Constants.Shooter.aimedAtSpeaker){
+      arm.ArmUpCommand();
+    }
+    else {arm.ArmHoldPosition();}
+  }
 
   // Called once the command ends or is interrupted.
   @Override
@@ -38,6 +43,6 @@ public class ArmUpAutoCommand extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return !arm.GetTopLimitSwitch(); //returns true when top limit switch is pressed (limit switch goes from true to false with "!")
-}
+    return !operatorController.getRawButton(3);
+  }
 }

@@ -35,8 +35,6 @@ public void StopArm(){
 
 public void ArmJoystickControl(double armCommandSpeed){
 
-  armMotor.set(-armCommandSpeed);
-
   if ((armCommandSpeed > 0 && armAtAmp.get() == false) || (armCommandSpeed <0 && armAtRest.get() == false)){
    armMotor.set(0);
   }
@@ -80,6 +78,10 @@ public void ArmUpCommand(){
   } 
 }
 
+public void ArmHoldPosition(){
+  armMotor.set(Constants.Shooter.armHoldSpeed);
+}
+
 public double GetArmEncoderPosition(){
   return armMotor.getSelectedSensorPosition()/1000;
  }
@@ -106,6 +108,8 @@ public double GetArmEncoderPosition(){
   SmartDashboard.putNumber("Arm Encoder Value", armMotor.getSelectedSensorPosition()/1000);
   SmartDashboard.putBoolean("Low Arm Limit Switch", armAtRest.get());
   SmartDashboard.putBoolean("Top Arm Limit Switch", armAtAmp.get());
+  SmartDashboard.putNumber("Arm Percentage Setting", armMotor.getMotorOutputPercent());
+
     
   }
 }

@@ -61,8 +61,10 @@ public final class Constants
     public static final int noteInFeederSensor = 2;
 
     //Arm Encoder Values
-    public static final int almostUpValue = 90;
-    public static final int almostDownValue = 20;
+    public static final int almostUpValue = 240;
+    public static final int almostDownValue = 90;
+    public static final int aimedAtSpeaker = 60;
+    
     public static final double ampFeedSpeed = 0.8;
     public static final double ampShooterSpeed = -0.6;
     public static final double waitTimeForScore = 1;
@@ -77,7 +79,7 @@ public final class Constants
     public static final double feedHighSpeed = -.8;
     public static final double shootLowSpeed = -0.4;
     public static final double shootHighSpeed = -.8;
-    public static final double TimeToRunShooterIntoAmp = .5; //run motors for this many seconds
+    public static final double TimeToRunShooterIntoAmp = 1; //run motors for this many seconds
     public static final double feedBackward = .8;
     
   }

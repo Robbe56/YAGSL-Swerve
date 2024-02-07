@@ -64,7 +64,7 @@ public class RollerButtonCommand extends Command {
       shooter.ShooterIntoSpeakerSpeed();
     }
 
-    if (operatorController.getLeftBumper() == false && operatorController.getRawButton(1) == false){ //not pressing anything
+    if (operatorController.getLeftBumper() == false && operatorController.getRawButton(4) == false){ //not pressing anything
       shooter.StopShooter();
     }
 
@@ -77,11 +77,11 @@ public class RollerButtonCommand extends Command {
       }
 
     }
-    if (operatorController.getRightBumper() == false && operatorController.getRawButton(1) == false && 
+    if (operatorController.getRightBumper() == false && operatorController.getRawButton(4) == false && 
     (driveController.getLeftBumper() == false && driveController.getRightBumper() == false)){
       shooter.StopFeedRoller();
     }
-    if (operatorController.getRawButton(1) == true){
+    if (operatorController.getRawButton(4) == true){
       shooter.FeedMotorsBackward();
       shooter.ShooterMotorsBackward();
     }
