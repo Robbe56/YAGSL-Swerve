@@ -5,6 +5,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
 import frc.robot.subsystems.ShooterSubsystem;
@@ -12,11 +13,13 @@ import frc.robot.subsystems.ShooterSubsystem;
 public class AutoDumpInAmp extends Command {
   /** Creates a new AutoDumpInAmp. */
    private final ShooterSubsystem shooter;
+   private final XboxController operatorController;
    private final Timer timer;
 
-  public AutoDumpInAmp(ShooterSubsystem m_shooter) {
+  public AutoDumpInAmp(ShooterSubsystem m_shooter, XboxController m_operatorController) {
     // Use addRequirements() here to declare subsystem dependencies.
     shooter = m_shooter;
+    operatorController = m_operatorController;
     timer = new Timer(); 
     addRequirements(shooter);
   }
@@ -45,6 +48,6 @@ public class AutoDumpInAmp extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return timer.get() > Constants.Shooter.TimeToRunShooterIntoAmp;
+    return timer.get() > Constants.Shooter.TimeToRunShooterIntoAmp || !operatorController.getRawButton(1); //move arm down when timer stops or when button 1 stops being pressed
   }
 }

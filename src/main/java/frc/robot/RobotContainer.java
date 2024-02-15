@@ -17,11 +17,13 @@ import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.swervedrive.drivebase.AbsoluteDriveAdv;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
 import frc.robot.subsystems.ArmSubsystem;
+import frc.robot.subsystems.HangSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.commands.ArmDownAutoCommand;
 import frc.robot.commands.ArmUpAutoCommand;
 import frc.robot.commands.AutoDumpInAmp;
+import frc.robot.commands.HangerCommand;
 import frc.robot.commands.JoystickArmCommand;
 import frc.robot.commands.MoveArmToSpeakerShot;
 import frc.robot.commands.RollerButtonCommand;
@@ -40,6 +42,7 @@ public class RobotContainer
   private final IntakeSubsystem m_intake = new IntakeSubsystem();
   private final ShooterSubsystem m_shooter = new ShooterSubsystem();
   private final ArmSubsystem m_arm = new ArmSubsystem();
+  private final HangSubsystem m_hang = new HangSubsystem();
   public double armControlValue;
   private final SwerveSubsystem drivebase = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(),
                                                                          "swerve/neo"));
@@ -55,6 +58,7 @@ public class RobotContainer
   private final JoystickArmCommand m_joystickArmCommand;
   private final RollerButtonCommand m_RollerButtonCommand;
   private final MoveArmToSpeakerShot m_MoveArmToSpeakerShot;
+  private final HangerCommand m_HangerCommand;
 
   private final SequentialCommandGroup m_autoAmpSequence;
 
@@ -68,14 +72,16 @@ public class RobotContainer
 
     m_joystickArmCommand = new JoystickArmCommand(m_arm, operatorController);  //control arm manually with joysticks
     m_RollerButtonCommand = new RollerButtonCommand(m_shooter, m_intake, driverXbox, operatorController); //control all rollers with buttons
-   
+    m_HangerCommand = new HangerCommand(m_hang, operatorController, driverXbox);
+
     m_intake.setDefaultCommand(m_RollerButtonCommand);
     m_shooter.setDefaultCommand(m_RollerButtonCommand);
     m_arm.setDefaultCommand(m_joystickArmCommand);
+    m_hang.setDefaultCommand(m_HangerCommand);
 
     m_armDownAutoCommand = new ArmDownAutoCommand(m_arm);
     m_armUpAutoCommand = new ArmUpAutoCommand(m_arm);
-    m_autoDumpInAmp = new AutoDumpInAmp(m_shooter);
+    m_autoDumpInAmp = new AutoDumpInAmp(m_shooter, operatorController);
     m_MoveArmToSpeakerShot = new MoveArmToSpeakerShot(m_arm, operatorController);
 
   
@@ -124,6 +130,7 @@ public class RobotContainer
         () -> driverXbox.getRawAxis(2));
 
     drivebase.setDefaultCommand(driveFieldOrientedAnglularVelocity);
+    //drivebase.setDefaultCommand(driveFieldOrientedDirectAngle);
  //       drivebase.setDefaultCommand(
  //       !RobotBase.isSimulation() ? driveFieldOrientedDirectAngle : driveFieldOrientedDirectAngleSim);
   }
@@ -142,8 +149,7 @@ public class RobotContainer
     new JoystickButton(driverXbox, 8).onTrue((new InstantCommand(drivebase::zeroGyro)));
     new JoystickButton(driverXbox, 3).onTrue(new InstantCommand(drivebase::addFakeVisionReading));
 
-    //new JoystickButton(operatorController, 1).onTrue(m_autoAmpSequence);
-    new JoystickButton(operatorController, 1).onFalse(m_joystickArmCommand);
+    new JoystickButton(operatorController, 1).onTrue(m_autoAmpSequence);
     new JoystickButton(operatorController, 3).onTrue(m_MoveArmToSpeakerShot);
 
 

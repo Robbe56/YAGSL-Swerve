@@ -7,6 +7,7 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.Constants;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 
@@ -23,7 +24,7 @@ public class RollerButtonCommand extends Command {
     driveController = m_driver;
     operatorController = m_operator;
     shooter = m_shooter;
-   intake = m_intake;
+    intake = m_intake;
     timer = new Timer();
 
     addRequirements(shooter);
@@ -32,7 +33,9 @@ public class RollerButtonCommand extends Command {
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+       timer.reset();
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
@@ -43,7 +46,7 @@ public class RollerButtonCommand extends Command {
 
     if ((driveController.getLeftBumper() == true || driveController.getRightBumper() == true) 
     && 
-    shooter.noteInFeeder.get() == true){
+    shooter.getNoteSensor() == true){
       intake.intakeActive();
       shooter.FeedMotorFast();
     }
@@ -55,21 +58,28 @@ public class RollerButtonCommand extends Command {
     &&
     driveController.getYButton() == false) 
     || 
-    shooter.noteInFeeder.get() == false)
+    shooter.getNoteSensor() == false)
     {
       intake.intakeRest();
     }
 
     if (operatorController.getLeftBumper() == true){
-      shooter.ShooterIntoSpeakerSpeed();
+         timer.start();
+      if (timer.get() < Constants.Shooter.BackUpShooterWheelTime){
+        shooter.ShooterMotorsBackward();
+      }
+      else {
+        shooter.ShooterIntoSpeakerSpeed();
+      }
     }
 
     if (operatorController.getLeftBumper() == false && operatorController.getRawButton(4) == false){ //not pressing anything
+      timer.reset();
       shooter.StopShooter();
     }
 
     if (operatorController.getRightBumper() == true){
-      if (shooter.noteInFeeder.get() == true){
+      if (shooter.noteInFeeder.get() == true){ //no note detected by sensor on shooter
       shooter.FeedMotorFast();
       }
       else {

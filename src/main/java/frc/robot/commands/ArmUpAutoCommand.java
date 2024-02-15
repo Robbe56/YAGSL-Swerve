@@ -14,7 +14,7 @@ public class ArmUpAutoCommand extends Command {
 
   public ArmUpAutoCommand(ArmSubsystem m_arm) {
     // Use addRequirements() here to declare subsystem dependencies.
-    arm = m_arm; 
+    arm = m_arm;
     addRequirements(arm);
   }
 

@@ -100,6 +100,10 @@ leftShooterMotor.configFactoryDefault();
     leftShooterMotor.set(Constants.Shooter.shootHighSpeed);
    }
 
+   public boolean getNoteSensor(){
+    return noteInFeeder.get();
+   }
+
 
 
   @Override
