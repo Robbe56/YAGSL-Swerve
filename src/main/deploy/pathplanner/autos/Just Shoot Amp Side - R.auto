@@ -2,10 +2,10 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 0.6816344588466624,
-      "y": 6.722020177278586
+      "x": 15.73,
+      "y": 6.640044321458116
     },
-    "rotation": 60.0
+    "rotation": 120.0
   },
   "command": {
     "type": "sequential",
@@ -20,7 +20,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Amp Side One Note Path - B"
+            "pathName": "Amp Side One Note Path - R"
           }
         }
       ]
