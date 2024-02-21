@@ -43,8 +43,8 @@ public final class Constants
   public static final class Intake{
     public static final int topMotorCANID = 22;
     public static final int bottomMotorCANID = 21;
-    public static final double topMotorIntakeSpeed = 0.8;
-    public static final double bottomMotorIntakeSpeed = 0.8;
+    public static final double topMotorIntakeSpeed = 1;
+    public static final double bottomMotorIntakeSpeed = 1;
     public static final int SpinButton = 1;
     public static final double SpitOutSpeed = -1;
     
@@ -64,29 +64,29 @@ public final class Constants
 
     public static final int armDownLimitSwitch = 8;
     public static final int armUpLimitSwitch = 9;
-    public static final int noteInFeederSensor = 6;
+    public static final int noteInFeederSensor = 0;
 
     //Arm Encoder Values
     public static final int almostUpValue = 240;
     public static final int almostDownValue = 90;
-    public static final int aimedAtSpeaker = 94; // was 94 to shoot from subwoofer, 144 to shoot from safe zone
+    public static final int aimedAtSpeaker = 93; // was 94 to shoot from subwoofer, 144 to shoot from safe zone
     
     public static final double ampFeedSpeed = 0.8;
     public static final double ampShooterSpeed = -0.6;
     public static final double waitTimeForScore = 1;
 
-    public static final double armUpSpeed = -0.5;
-    public static final double armDownSpeed = 0.45;
+    public static final double armUpSpeed = -0.6;
+    public static final double armDownSpeed = 0.7;
     public static final double armHoldSpeed = -0.15;
-    public static final double MaxUpSpeed = -0.5;
-    public static final double MaxDownSpeed = 0.45;
+    public static final double MaxUpSpeed = -0.6;
+    public static final double MaxDownSpeed = 0.7;
     
     public static final double feedLowSpeed = -0.5;
-    public static final double feedHighSpeed = -.8;
+    public static final double feedHighSpeed = -1;
     public static final double shootLowSpeed = -0.4;
     public static final double shootHighSpeed = -.8;
     public static final double TimeToRunShooterIntoAmp = 1; //run motors for this many seconds
-    public static final double feedBackward = .8;
+    public static final double feedBackward = .6;
     public static final double BackUpShooterWheelTime = 0; //run motors backward to get note out of shooter wheels before we run them
     
   }
