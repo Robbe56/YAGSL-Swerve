@@ -158,7 +158,7 @@ public class RobotContainer
     new JoystickButton(driverXbox, 8).onTrue((new InstantCommand(drivebase::zeroGyro)));
     new JoystickButton(driverXbox, 3).onTrue(new InstantCommand(drivebase::addFakeVisionReading));
 
-    new JoystickButton(operatorController, 1).onTrue(m_autoAmpSequence);
+    //new JoystickButton(operatorController, 1).onTrue(m_autoAmpSequence);
     new JoystickButton(operatorController, 3).onTrue(m_MoveArmToSpeakerShot);
 
 
