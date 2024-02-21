@@ -7,6 +7,8 @@ package frc.robot;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
@@ -29,6 +31,8 @@ import frc.robot.commands.MoveArmToSpeakerShot;
 import frc.robot.commands.RollerButtonCommand;
 
 import java.io.File;
+
+import com.pathplanner.lib.auto.AutoBuilder;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a "declarative" paradigm, very
@@ -62,6 +66,8 @@ public class RobotContainer
 
   private final SequentialCommandGroup m_autoAmpSequence;
 
+  private final SendableChooser<Command> autoChooser;
+
   //public double speedCorrectionFactor;
 
   /**
@@ -86,6 +92,9 @@ public class RobotContainer
 
   
     m_autoAmpSequence = new SequentialCommandGroup(m_armUpAutoCommand, m_autoDumpInAmp, m_armDownAutoCommand);
+
+    autoChooser = AutoBuilder.buildAutoChooser();
+    SmartDashboard.putData("Auto Chooser", autoChooser);
 
     configureBindings();
 
@@ -166,7 +175,7 @@ public class RobotContainer
   public Command getAutonomousCommand()
   {
     // An example command will be run in autonomous
-    return drivebase.getAutonomousCommand("New Path", true);
+    return autoChooser.getSelected();
   }
 
   public void setDriveMode()

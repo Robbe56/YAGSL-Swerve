@@ -70,6 +70,8 @@ public final class Constants
     public static final int almostUpValue = 240;
     public static final int almostDownValue = 90;
     public static final int aimedAtSpeaker = 93; // was 94 to shoot from subwoofer, 144 to shoot from safe zone
+    public static final int aimedFromSafeZone = 144;
+
     
     public static final double ampFeedSpeed = 0.8;
     public static final double ampShooterSpeed = -0.6;
@@ -88,6 +90,9 @@ public final class Constants
     public static final double TimeToRunShooterIntoAmp = 1; //run motors for this many seconds
     public static final double feedBackward = .6;
     public static final double BackUpShooterWheelTime = 0; //run motors backward to get note out of shooter wheels before we run them
+    
+    public static final double SpinUpTime = 1.5; //time to get wheels up to speed
+    public static final double NoteInAirTime = 2; //time to shoot note out
     
   }
 

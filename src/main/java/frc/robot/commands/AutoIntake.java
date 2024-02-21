@@ -5,16 +5,17 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.subsystems.ArmSubsystem;
+import frc.robot.subsystems.IntakeSubsystem;
 
-public class ArmDownAutoCommand extends Command {
-  /** Creates a new ArmDownAutoCommand. */
-  private final ArmSubsystem arm;
+public class AutoIntake extends Command {
+  /** Creates a new AutoIntake. */
+  public final IntakeSubsystem intake;
 
-  public ArmDownAutoCommand(ArmSubsystem m_arm) {
+  public AutoIntake(IntakeSubsystem m_intake) {
     // Use addRequirements() here to declare subsystem dependencies.
-    arm = m_arm; 
-    addRequirements(arm);
+    intake = m_intake;
+
+    addRequirements(intake);
   }
 
   // Called when the command is initially scheduled.
@@ -24,18 +25,18 @@ public class ArmDownAutoCommand extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    arm.ArmDownCommand();
+    intake.intakeActive();
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    arm.StopArm();
+    intake.intakeRest();
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false; //command does not end on its own, only as part of a race group in automode
-}
+    return false;
+  }
 }
